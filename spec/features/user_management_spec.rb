@@ -34,4 +34,24 @@ feature 'User sign up' do
     expect(current_path).to eq('/users')
     expect(page).to have_content 'Confirmation does not match password'
   end
+
+  scenario 'email is a required field' do
+    expect { sign_up_email }.not_to change(User, :count)
+    expect(current_path).to eq('/users')
+  end
+
+  def sign_up_email(first_name: 'aaron',
+                    last_name: 'kendall',
+                    username: 'Ken',
+                    password: 'secret',
+                    password_confirmation: 'secret')
+    visit '/users/new'
+    expect(page.status_code).to eq(200)
+    fill_in :first_name, with: first_name
+    fill_in :last_name, with: last_name
+    fill_in :username, with: username
+    fill_in :password, with: password
+    fill_in :password_confirmation, with: password_confirmation
+    click_button 'Sign up'
+  end
 end

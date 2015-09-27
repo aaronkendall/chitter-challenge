@@ -1,10 +1,10 @@
 <h1>Sign up to Chitter!</h1>
 
 <form action='/users' method='post'>
-  First Name: <input name='first_name' type='text' value='<%= @user.first_name %>'>
-  Last Name: <input name='last_name' type='text' value='<%= @user.last_name %>'>
-  Username: <input name='username' type='text' value='<%= @user.username %>'>
-  Email: <input name='email' type='text' value='<%= @user.email %>'>
+  First Name: <input name='first_name' type='text' value='<%= @user.first_name %>' required>
+  Last Name: <input name='last_name' type='text' value='<%= @user.last_name %>' required>
+  Username: <input name='username' type='text' value='<%= @user.username %>' required>
+  Email: <input name='email' type='text' value='<%= @user.email %>' required>
   Password: <input name='password' type='password'>
   Confirm Password: <input name='password_confirmation' type='password'>
   <input type='submit' value='Sign up'>

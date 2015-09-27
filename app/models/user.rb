@@ -12,7 +12,7 @@ class User
   property :username,        String
   property :first_name,      String
   property :last_name,       String
-  property :email,           String
+  property :email,           String, required: true
   property :password_digest, Text
 
   def password=(password)
