@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature 'User sign up' do
 
-  scenario 'I can sign up as a new user' do
+  xscenario 'I can sign up as a new user' do
     user = create(:user)
     expect { sign_up(user) }.to change(User, :count).by(1)
     expect(page).to have_content('Welcome, Ken')
@@ -38,5 +38,25 @@ feature 'User sign up' do
     sign_up(user)
     expect { sign_up(user) }.to change(User, :count).by(0)
     expect(page).to have_content 'Email is already taken'
+  end
+end
+
+feature 'Sign in' do
+  let(:user_sign_in) do
+    User.create(email: 'user@example',
+                password: 'secret1234',
+                username: 'user123',
+                password_confirmation: 'secret1234')
+  end
+
+  scenario 'with correct credentials' do
+    sign_in(email: user_sign_in.email, password: user_sign_in.password)
+    expect(page).to have_content 'Welcome, #{user_sign_in.username}'
+  end
+
+  def sign_in(email:, password:)
+    visit '/sessions/new'
+    fill_in :email, with: user_sign_in.email
+    fill_in :password, with: user_sign_in.password
   end
 end
