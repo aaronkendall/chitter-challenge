@@ -9,17 +9,6 @@ feature 'User sign up' do
     expect(User.first.email).to eq('ken@ken.com')
   end
 
-  def sign_up(user)
-    visit '/users/new'
-    fill_in :email, with: user.email
-    fill_in :first_name, with: user.first_name
-    fill_in :last_name, with: user.last_name
-    fill_in :username, with: user.username
-    fill_in :password, with: user.password
-    fill_in :password_confirmation, with: user.password_confirmation
-    click_button 'Sign up'
-  end
-
   scenario 'with a password that does not match' do
     user = create(:user, password_confirmation: "wrong")
     expect { sign_up(user) }.not_to change(User, :count)
@@ -42,21 +31,21 @@ feature 'User sign up' do
 end
 
 feature 'Sign in' do
-  let(:user_sign_in) do
-    User.create(email: 'user@example',
-                password: 'secret1234',
-                username: 'user123',
-                password_confirmation: 'secret1234')
-  end
 
   scenario 'with correct credentials' do
-    sign_in(email: user_sign_in.email, password: user_sign_in.password)
-    expect(page).to have_content 'Welcome, #{user_sign_in.username}'
+    user = create(:user)
+    sign_in(user)
+    expect(page).to have_content 'Welcome, Ken'
   end
+end
 
-  def sign_in(email:, password:)
-    visit '/sessions/new'
-    fill_in :email, with: user_sign_in.email
-    fill_in :password, with: user_sign_in.password
+feature 'User signs out' do
+
+  scenario 'while being signed in' do
+    user = create(:user)
+    sign_in(user)
+    click_button 'Sign out'
+    expect(page).to have_content('goodbye!')
+    expect(page).not_to have_content('Welcome, test@test.com')
   end
 end

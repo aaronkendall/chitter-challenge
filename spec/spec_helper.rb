@@ -6,6 +6,7 @@ require 'database_cleaner'
 require 'capybara/rspec'
 require_relative '../app/app'
 require 'factory_girl'
+require_relative 'helpers/session'
 
 Capybara.app = Chitter
 
@@ -20,6 +21,8 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
     FactoryGirl.definition_file_paths = %w{./spec/factories}
     FactoryGirl.find_definitions
+
+  config.include SessionHelpers
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
