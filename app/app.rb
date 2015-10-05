@@ -52,7 +52,22 @@ class Chitter < Sinatra::Base
 
   delete '/sessions' do
     session[:user_id] = nil
-    flash.now[:notice] = ['You have successfully signed out, goodbye!']
+    flash[:notice] = "You have successfully signed out, goodbye!"
+    redirect to('/')
+  end
+
+  get '/peeps/new' do
+    if session[:user_id] == nil
+      flash[:notice] = "You must be logged in to access that page"
+      redirect to('/')
+    else
+      erb :'peeps/new'
+    end
+  end
+
+  post '/peeps/new' do
+    peep = Peep.new(content: params[:peep])
+    peep.save
     redirect to('/')
   end
 

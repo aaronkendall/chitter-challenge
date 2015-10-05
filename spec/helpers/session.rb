@@ -15,6 +15,13 @@ module SessionHelpers
     visit '/sessions/new'
     fill_in :email, with: user.email
     fill_in :password, with: user.password
+    click_button 'Sign in'
+  end
+
+  def peep(content)
+    visit '/peeps/new'
+    fill_in :peep, with: content
+    click_button 'Submit'
   end
 
 end
