@@ -43,6 +43,7 @@ class Chitter < Sinatra::Base
     user = User.authenticate(params[:email], params[:password])
     if user
       session[:user_id] = user.id
+      session[:username] = user.username
       redirect to('/')
     else
       flash.now[:errors] = ['The email or password is incorrect']
@@ -51,7 +52,7 @@ class Chitter < Sinatra::Base
   end
 
   delete '/sessions' do
-    session[:user_id] = nil
+    session.clear
     flash[:notice] = "You have successfully signed out, goodbye!"
     redirect to('/')
   end
@@ -66,8 +67,8 @@ class Chitter < Sinatra::Base
   end
 
   post '/peeps/new' do
-    peep = Peep.new(content: params[:peep])
-    peep.save
+    user = User.first(id: session[:user_id])
+    user.peeps.create(content: params[:peep])
     redirect to('/')
   end
 
